@@ -1,4 +1,4 @@
-require 'bike'
+require "spec_helper"
 
 
 describe "Bike" do
