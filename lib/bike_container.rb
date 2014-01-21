@@ -19,7 +19,7 @@ DEFAULT_CAPACITY = 10
 	end
 
 	def dock(bike)
-		raise "Station is full" if full?
+		raise "Container is full" if full?
 		raise "That's not a bike" if !bike.is_a? Bike
 		bikes << bike
 	end
