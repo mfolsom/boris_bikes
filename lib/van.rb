@@ -22,4 +22,10 @@ class Van
 		end
 	end
 
+	def unload_bikes(container)
+		self.bikes.dup.each do |bike|
+			self.release(bike)
+			container.dock(bike)
+		end
+	end
 end

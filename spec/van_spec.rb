@@ -37,6 +37,16 @@ describe Van do
 		expect(van.bike_count).to eq(5)
 	end
 
+	it "should be able to unload bikes" do
+		bike1,bike2, bike3 = Bike.new, Bike.new, Bike.new
+		van.dock(bike1)
+		van.dock(bike2)
+		van.dock(bike3)
+		van.unload_bikes(station)
+		expect(van).to be_empty
+		expect(station.bikes).to eq([bike1,bike2, bike3])
+	end
+
 	it "should accept fixed bikes from the garage" do
 		bike1, bike2, bike3 = Bike.new, Bike.new, Bike.new
 		garage.dock(bike1)
