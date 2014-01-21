@@ -24,6 +24,7 @@ class Van
 
 	def unload_bikes(container)
 		self.bikes.dup.each do |bike|
+			break if container.full?
 			self.release(bike)
 			container.dock(bike)
 		end
