@@ -24,6 +24,9 @@ DEFAULT_CAPACITY = 10
 	end
 
 	def release(bike)
+		raise "There are no bikes to release!" if empty?
+		raise "That's not a bike!" if !bike.is_a? Bike
+		raise "The bike isn't here" if !bikes.include? bike
 		bikes.delete(bike)
 	end
 
