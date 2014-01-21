@@ -1,6 +1,6 @@
 module BikeContainer
 
-DEFAULT_CAPACITY = 10
+	DEFAULT_CAPACITY = 10
 
 	def bikes
 		@bikes ||= []
@@ -11,6 +11,7 @@ DEFAULT_CAPACITY = 10
 	end
 	
 	def capacity=(value)
+		raise "number must be a postive integer" if value < 0
 		@capacity = value
 	end
 

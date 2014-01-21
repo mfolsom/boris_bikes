@@ -10,9 +10,12 @@ describe Garage do
 		garage.dock(bike)
 		expect(bike).not_to be_broken
 	end
-	
+
 	it "should allow setting a capacity as soon as it is initialized" do
 		expect(garage.capacity).to eq(25)
 	end
 
+	it "shouldn't allow a negative capacity" do
+		expect{Garage.new(capacity: -5)}.to raise_error(RuntimeError)
+	end
 end

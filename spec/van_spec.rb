@@ -13,17 +13,23 @@ describe Van do
 		station.bikes.each { |bike| bike.break }
 	end
 
+	def new_broken_bike
+		bike = Bike.new
+		bike.break
+		bike
+	end
+
+	def dock_bikes(station, bikes)
+		bikes.each {|bike| station.dock(bike) }
+	end
+
 	it "should allow setting of capacity as it is initialized" do
 		expect(van.capacity).to eq(5)
 	end
 
 	it "should get all the broken bikes from the docking station" do
-		working_bike, broken_bike, broken_bike2 = Bike.new, Bike.new, Bike.new
-		broken_bike.break
-		broken_bike2.break
-		station.dock(working_bike)
-		station.dock(broken_bike)
-		station.dock(broken_bike2)
+		working_bike, broken_bike, broken_bike2 = Bike.new, new_broken_bike, new_broken_bike
+		dock_bikes(station,[working_bike,broken_bike,broken_bike2])
 		van.load_broken_bikes(station)
 		expect(station.bikes).to eq([working_bike])
 		expect(van.bikes).to eq([broken_bike,broken_bike2])
@@ -38,14 +44,11 @@ describe Van do
 	end
 
 	it "should be able to unload bikes" do
-		bike1,bike2, bike3 = Bike.new, Bike.new, Bike.new
-		bike2.break
-		van.dock(bike1)
-		van.dock(bike2)
-		van.dock(bike3)
+		bike1,bike2, bike3 = Bike.new, new_broken_bike, Bike.new
+		dock_bikes(van,[bike1,bike2,bike3])
 		van.unload_bikes(station)
 		expect(van).to be_empty
-		expect(station.bikes).to eq([bike1,bike2, bike3])
+		expect(station.bikes).to eq([bike1,bike2,bike3])
 	end
 
 	it "should stop unloading once the container is full" do
@@ -59,9 +62,7 @@ describe Van do
 
 	it "should accept fixed bikes from the garage" do
 		bike1, bike2, bike3 = Bike.new, Bike.new, Bike.new
-		garage.dock(bike1)
-		garage.dock(bike2)
-		garage.dock(bike3)
+		dock_bikes(garage,[bike1,bike2,bike3])
 		van.load_fixed_bikes(garage)
 		expect(garage).to be_empty
 		expect(van.bikes).to eq([bike1,bike2,bike3])
