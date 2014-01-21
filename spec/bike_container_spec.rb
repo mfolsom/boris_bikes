@@ -16,6 +16,9 @@ describe BikeContainer do
 		holder.dock(bike)
 		expect(holder.bike_count).to eq(1)
 	end
+	it "should not dock a bike if it isn't a bike" do
+		expect{holder.dock("mouse")}.to raise_error(RuntimeError)
+	end
 
 	it "should release a bike" do
 		holder.dock(bike)
