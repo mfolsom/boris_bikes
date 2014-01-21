@@ -35,8 +35,7 @@ describe BikeContainer do
 		expect{holder.release("cookies")}.to raise_error(RuntimeError)
 	end
 	it "should not release a bike if that bike isn't in the holder" do
-		bike1 = Bike.new
-		bike2 = Bike.new
+		bike1, bike2 = Bike.new, Bike.new
 		holder.dock(bike1)
 		expect{holder.release(bike2)}.to raise_error(RuntimeError)
 	end		
@@ -63,4 +62,13 @@ describe BikeContainer do
 		holder.dock(broken_bike)
 		expect(holder.available_bikes).to eq([working_bike])
 	end
+
+	it "should provide the list of broken bikes" do
+		working_bike, broken_bike = Bike.new, Bike.new
+		broken_bike.break
+		holder.dock(working_bike)
+		holder.dock(broken_bike)
+		expect(holder.broken_bikes).to eq([broken_bike])
+	end
+
 end
