@@ -1,6 +1,6 @@
 module BikeContainer
 
-DEFAULT_CAPACITY = 10
+	DEFAULT_CAPACITY = 10
 
 	def bikes
 		@bikes ||= []
@@ -11,6 +11,7 @@ DEFAULT_CAPACITY = 10
 	end
 	
 	def capacity=(value)
+		raise "number must be a postive integer" if value < 0
 		@capacity = value
 	end
 
@@ -19,11 +20,15 @@ DEFAULT_CAPACITY = 10
 	end
 
 	def dock(bike)
-		raise "Station is full" if full?
+		raise "Container is full" if full?
+		raise "That's not a bike" if !bike.is_a? Bike
 		bikes << bike
 	end
 
 	def release(bike)
+		raise "There are no bikes to release!" if empty?
+		raise "That's not a bike!" if !bike.is_a? Bike
+		raise "The bike isn't here" if !bikes.include? bike
 		bikes.delete(bike)
 	end
 
@@ -37,5 +42,9 @@ DEFAULT_CAPACITY = 10
 
 	def available_bikes
 		bikes.reject {|bike| bike.broken?}
+	end
+
+	def broken_bikes
+		bikes.select {|bike| bike.broken?}
 	end
 end

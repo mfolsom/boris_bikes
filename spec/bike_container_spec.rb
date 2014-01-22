@@ -17,11 +17,31 @@ describe BikeContainer do
 		expect(holder.bike_count).to eq(1)
 	end
 
+	it "should not dock a bike if it isn't a bike" do
+		expect{holder.dock("mouse")}.to raise_error(RuntimeError)
+	end
+
 	it "should release a bike" do
 		holder.dock(bike)
 		holder.release(bike)
 		expect(holder.bike_count).to eq(0)
 	end
+
+	it "should not release a bike if there are no bikes" do
+		expect(holder.bike_count).to eq(0)
+		expect{holder.release(bike)}.to raise_error(RuntimeError)
+	end
+
+	it "should not release a bike if it was given cookies to release" do
+		fill_holder holder
+		expect{holder.release("cookies")}.to raise_error(RuntimeError)
+	end
+
+	it "should not release a bike if that bike isn't in the holder" do
+		bike1, bike2 = Bike.new, Bike.new
+		holder.dock(bike1)
+		expect{holder.release(bike2)}.to raise_error(RuntimeError)
+	end		
 
 	it "should know when it's empty" do
 		expect(holder).to be_empty
@@ -44,5 +64,13 @@ describe BikeContainer do
 		holder.dock(working_bike)
 		holder.dock(broken_bike)
 		expect(holder.available_bikes).to eq([working_bike])
+	end
+
+	it "should provide the list of broken bikes" do
+		working_bike, broken_bike = Bike.new, Bike.new
+		broken_bike.break
+		holder.dock(working_bike)
+		holder.dock(broken_bike)
+		expect(holder.broken_bikes).to eq([broken_bike])
 	end
 end
